@@ -5,6 +5,7 @@ import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,9 +14,11 @@ import java.util.Collections;
 public class KeycloakUserService {
 
     private final Keycloak keycloak;
+    private final String targetRealm;
 
-    public KeycloakUserService(Keycloak keycloak) {
+    public KeycloakUserService(Keycloak keycloak, @Value("${keycloak.target-realm}") String targetRealm) {
         this.keycloak = keycloak;
+        this.targetRealm = targetRealm;
     }
 
     public String createUser(User clUser) {
@@ -37,7 +40,7 @@ public class KeycloakUserService {
                 Collections.singletonList(credential));
 
         Response response = keycloak
-                .realm("my-realm")
+                .realm(targetRealm)
                 .users()
                 .create(user);
 

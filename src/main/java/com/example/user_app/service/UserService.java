@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -27,5 +29,9 @@ public class UserService {
         keycloakUserService.createUser(saveUser);
 
         return user;
+    }
+
+    public List<User> getAllUser() {
+        return userRepository.findAll();
     }
 }
